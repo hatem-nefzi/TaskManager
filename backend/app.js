@@ -3,12 +3,19 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
 const sqlite3 = require('sqlite3').verbose();
+const fs = require('fs');
 
 const app = express();
 const port = 8081;
 
+// Ensure the data directory exists
+const dataDir = path.join(__dirname, 'data');
+if (!fs.existsSync(dataDir)) {
+    fs.mkdirSync(dataDir);  // Create the 'data' directory if it doesn't exist
+}
+
 // Database setup
-const db = new sqlite3.Database('./taskmanager.db', (err) => {
+const db = new sqlite3.Database(path.join(dataDir, 'taskmanager.db'), (err) => {
     if (err) {
         console.error("Error opening database:", err.message);
     } else {
