@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: taskmanager-backend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: taskmanager-backend
+  template:
+    metadata:
+      labels:
+        app: taskmanager-backend
+    spec:
+      containers:
+        - name: taskmanager-backend
+          image: hatemnefzi/taskmanager-backend:latest
+          ports:
+            - containerPort: 8081
+          volumeMounts:
+            - mountPath: /usr/src/app/data  
+              name: sqlite-data  
+      volumes:
+        - name: sqlite-data
+          persistentVolumeClaim:
+            claimName: sqlite-pvc  

@@ -9,8 +9,8 @@ services:
     ports:
       - "8081:8081"
     volumes:
-      - backend-data:/usr/src/app/data  # Mount SQLite volume to persistent directory
+      - backend-data:/usr/src/app/data  # mounted sqlite volume to persist data
 
 volumes:
-  backend-data:  # Define a Docker volume for backend database persistence
+  backend-data:  # defined a volume to persist data
     driver: local
