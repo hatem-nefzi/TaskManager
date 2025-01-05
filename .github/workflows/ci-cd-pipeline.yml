@@ -1,12 +1,12 @@
 name: CI/CD Pipeline for TaskManager
 
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+#on:
+ # push:
+  #  branches:
+   #   - main
+  #pull_request:
+   # branches:
+    #  - main
 
 jobs:
   # Build and push Docker images
@@ -49,17 +49,19 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up kubectl
-        uses: azure/setup-kubectl@v1
-        with:
-          kubectl-version: 'latest'
+      - name: Set up kubeconfig for Minikube
+        run: |
+          mkdir -p ~/.kube
+          echo "${{ secrets.MINIKUBE_KUBECONFIG }}" > ~/.kube/config
+          chmod 600 ~/.kube/config
 
       - name: Apply backend deployment and service
         run: |
-          kubectl apply -f kubernetes/backend-deployment.yaml --validate=false
-          kubectl apply -f kubernetes/backend-service.yaml --validate=false
+          kubectl apply -f kubernetes/backend-deployment.yaml
+          kubectl apply -f kubernetes/backend-service.yaml
 
       - name: Apply frontend deployment and service
         run: |
-          kubectl apply -f kubernetes/frontend-deployment.yaml --validate=false
-          kubectl apply -f kubernetes/frontend-service.yaml --validate=false
+          kubectl apply -f kubernetes/frontend-deployment.yaml
+          kubectl apply -f kubernetes/frontend-service.yaml
+
