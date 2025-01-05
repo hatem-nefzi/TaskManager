@@ -67,13 +67,10 @@ jobs:
         run: |
           minikube start --driver=docker
 
-      - name: Configure kubectl for Minikube
+      - name: Set up kubectl to use Minikube's kube config
         run: |
           mkdir -p $HOME/.kube
-          mkdir -p $HOME/.minikube
-          sudo cp -r /root/.kube/* $HOME/.kube/
-          sudo cp -r /root/.minikube/* $HOME/.minikube/
-          sudo chown -R $USER $HOME/.kube $HOME/.minikube
+          minikube kubectl -- config view --raw > $HOME/.kube/config
 
       - name: Verify Minikube
         run: kubectl cluster-info
@@ -84,4 +81,5 @@ jobs:
           kubectl apply -f kubernetes/backend-service.yaml
           kubectl apply -f kubernetes/frontend-deployment.yaml
           kubectl apply -f kubernetes/frontend-service.yaml
+
 
