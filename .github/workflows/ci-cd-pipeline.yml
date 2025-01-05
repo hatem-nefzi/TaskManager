@@ -72,7 +72,8 @@ jobs:
           mkdir -p $HOME/.kube
           minikube kubectl -- config view --raw > $HOME/.kube/config
 
-      
+      - name: Verify Minikube
+        run: kubectl cluster-info
 
       - name: Apply Kubernetes Manifests
         run: |
@@ -80,5 +81,4 @@ jobs:
           kubectl apply -f kubernetes/backend-service.yaml
           kubectl apply -f kubernetes/frontend-deployment.yaml
           kubectl apply -f kubernetes/frontend-service.yaml
-
 
