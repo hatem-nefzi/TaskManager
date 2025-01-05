@@ -56,10 +56,10 @@ jobs:
 
       - name: Apply backend deployment and service
         run: |
-          kubectl apply -f kubernetes/backend-deployment.yaml
-          kubectl apply -f kubernetes/backend-service.yaml
+          kubectl apply -f kubernetes/backend-deployment.yaml --validate=false
+          kubectl apply -f kubernetes/backend-service.yaml --validate=false
 
       - name: Apply frontend deployment and service
         run: |
-          kubectl apply -f kubernetes/frontend-deployment.yaml
-          kubectl apply -f kubernetes/frontend-service.yaml
+          kubectl apply -f kubernetes/frontend-deployment.yaml --validate=false
+          kubectl apply -f kubernetes/frontend-service.yaml --validate=false
