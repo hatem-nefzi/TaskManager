@@ -49,19 +49,31 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up kubeconfig for Minikube
+      - name: Install Minikube
         run: |
-          mkdir -p ~/.kube
-          echo "${{ secrets.MINIKUBE_KUBECONFIG }}" > ~/.kube/config
-          chmod 600 ~/.kube/config
+          curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+          sudo install minikube-linux-amd64 /usr/local/bin/minikube
 
-      - name: Apply backend deployment and service
+      - name: Start Minikube
         run: |
-          kubectl apply -f kubernetes/backend-deployment.yaml --validate=false
-          kubectl apply -f kubernetes/backend-service.yaml --validate=false
+          minikube start --driver=none
 
-      - name: Apply frontend deployment and service
+      - name: Configure kubectl for Minikube
         run: |
-          kubectl apply -f kubernetes/frontend-deployment.yaml --validate=false
-          kubectl apply -f kubernetes/frontend-service.yaml --validate=false
+          mkdir -p $HOME/.kube
+          mkdir -p $HOME/.minikube
+          sudo cp -r /root/.kube/* $HOME/.kube/
+          sudo cp -r /root/.minikube/* $HOME/.minikube/
+          sudo chown -R $USER $HOME/.kube $HOME/.minikube
+
+      - name: Verify Minikube
+        run: kubectl cluster-info
+
+      - name: Apply Kubernetes Manifests
+        run: |
+          kubectl apply -f kubernetes/backend-deployment.yaml
+          kubectl apply -f kubernetes/backend-service.yaml
+          kubectl apply -f kubernetes/frontend-deployment.yaml
+          kubectl apply -f kubernetes/frontend-service.yaml
+
 
