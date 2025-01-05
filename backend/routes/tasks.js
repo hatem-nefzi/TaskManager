@@ -9,7 +9,7 @@ const db = new sqlite3.Database('./taskmanager.db', (err) => {
     }
 });
 
-// Get all tasks
+
 router.get('/', (req, res) => {
     db.all('SELECT * FROM tasks', [], (err, rows) => {
         if (err) {
@@ -20,7 +20,7 @@ router.get('/', (req, res) => {
     });
 });
 
-// POST a new task
+
 router.post('/', (req, res) => {
   const { title, description, status } = req.body;
 
