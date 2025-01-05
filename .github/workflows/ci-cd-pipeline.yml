@@ -1,6 +1,6 @@
 name: CI/CD Pipeline for TaskManager
 
-on:
+#on:
   push:
     branches:
       - main
@@ -40,7 +40,7 @@ jobs:
       - name: Push frontend Docker image to Docker Hub
         run: |
           docker push hatemnefzi/taskmanager-frontend:latest
-  
+
   # Deploy to Kubernetes
   deploy:
     runs-on: ubuntu-latest
@@ -61,7 +61,7 @@ jobs:
 
       - name: Start Minikube
         run: |
-          minikube start --driver=none
+          sudo minikube start --driver=none
 
       - name: Configure kubectl for Minikube
         run: |
@@ -80,5 +80,3 @@ jobs:
           kubectl apply -f kubernetes/backend-service.yaml
           kubectl apply -f kubernetes/frontend-deployment.yaml
           kubectl apply -f kubernetes/frontend-service.yaml
-
-
