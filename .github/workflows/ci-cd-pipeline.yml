@@ -1,6 +1,6 @@
 name: CI/CD Pipeline for TaskManager
 
-on:
+#on:
   push:
     branches:
       - main
