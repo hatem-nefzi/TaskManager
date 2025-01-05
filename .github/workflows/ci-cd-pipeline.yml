@@ -53,15 +53,19 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y conntrack
+          # Install crictl
+          curl -LO https://github.com/kubernetes-sigs/cri-tools/releases/download/v1.23.0/crictl-v1.23.0-linux-amd64.tar.gz
+          sudo tar -C /usr/local/bin -xzf crictl-v1.23.0-linux-amd64.tar.gz
+          sudo rm crictl-v1.23.0-linux-amd64.tar.gz
 
       - name: Install Minikube
         run: |
           curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
           sudo install minikube-linux-amd64 /usr/local/bin/minikube
 
-      - name: Start Minikube
+      - name: Start Minikube with Docker driver
         run: |
-          sudo minikube start --driver=none
+          minikube start --driver=docker
 
       - name: Configure kubectl for Minikube
         run: |
@@ -80,3 +84,4 @@ jobs:
           kubectl apply -f kubernetes/backend-service.yaml
           kubectl apply -f kubernetes/frontend-deployment.yaml
           kubectl apply -f kubernetes/frontend-service.yaml
+
