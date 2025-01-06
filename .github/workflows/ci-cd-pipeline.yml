@@ -2,12 +2,13 @@ name: CI/CD Pipeline for TaskManager
 
 on:
   push:
-    branches:
+    branches-ignore:
+      
       
       
       - main
   pull_request:
-    branches:
+    branches-ignore:
       - main
 
 jobs:
