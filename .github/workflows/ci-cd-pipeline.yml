@@ -59,7 +59,8 @@ jobs:
 
       - name: Run Backend Tests
         run: |
-          docker run --rm hatemnefzi/taskmanager-backend:latest pytest tests/
+          docker run --rm hatemnefzi/taskmanager-backend:latest npm test
+
 
       - name: Run Frontend Tests
         run: |
