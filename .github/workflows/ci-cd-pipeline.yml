@@ -49,11 +49,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-
       # Backend: Basic test to check the environment
       - name: Install backend dependencies
         working-directory: ./backend
@@ -66,15 +61,13 @@ jobs:
           echo "Running backend tests"
           npm test || echo "No backend tests available"
 
-      # Frontend: Basic check if a simple HTML file is served
-      - name: Install frontend dependencies
-        working-directory: ./frontend
+      # Frontend: Simple check if index.html exists
+      - name: Frontend simple test
         run: |
-          npm install
-
-      - name: Run frontend tests (simple check)
-        working-directory: ./frontend
-        run: |
-          echo "Running frontend tests"
-          # Simple test to check if the index.html is present
-          if [ -f index.html ]; then echo "Frontend test passed"; else echo "Frontend test failed"; exit 1; fi
+          echo "Running frontend test"
+          if [ -f frontend/index.html ]; then 
+            echo "Frontend test passed"; 
+          else 
+            echo "Frontend test failed"; 
+            exit 1; 
+          fi
