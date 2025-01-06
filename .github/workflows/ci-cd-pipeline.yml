@@ -2,10 +2,10 @@ name: CI/CD Pipeline for TaskManager
 
 on:
   push:
-    branches:
+    branches-ignore:
       - main
   pull_request:
-    branches:
+    branches-ignore:
       - main
 
 jobs:
@@ -27,11 +27,12 @@ jobs:
 
       - name: Build backend Docker image
         run: |
-          docker build -t hatemnefzi/taskmanager-backend:latest ./backend
+          docker build -f backend/Dockerfile -t hatemnefzi/taskmanager-backend:latest ./backend
+        # Ensure you're referencing the correct directory and Dockerfile
 
       - name: Build frontend Docker image
         run: |
-          docker build -t hatemnefzi/taskmanager-frontend:latest ./frontend
+          docker build -f frontend/Dockerfile -t hatemnefzi/taskmanager-frontend:latest ./frontend
 
       - name: Push backend Docker image to Docker Hub
         run: |
@@ -70,10 +71,18 @@ jobs:
           kubectl apply -f kubernetes/frontend-deployment.yaml
           kubectl apply -f kubernetes/frontend-service.yaml
 
-      - name: Wait for Pods to be Ready
+      - name: Wait for Frontend Pod to be Ready
         run: |
           kubectl wait --for=condition=ready pod -l app=taskmanager-frontend --timeout=120s
-          kubectl wait --for=condition=ready pod -l app=taskmanager-backend --timeout=300s
+
+      - name: Wait for Backend Pod to be Ready (Extended Timeout)
+        run: |
+          kubectl wait --for=condition=ready pod -l app=taskmanager-backend --timeout=600s
+
+      # Debugging: Check backend pod logs if it doesn't become ready
+      - name: Check Backend Pod Logs
+        run: |
+          kubectl logs -l app=taskmanager-backend --tail=10
 
       - name: List Services
         run: kubectl get services
