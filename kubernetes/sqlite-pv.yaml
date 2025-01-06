@@ -8,5 +8,5 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: /mnt/data/sqlite  # Ensure this path exists in Minikube
+    path: /mnt/data/sqlite  
   persistentVolumeReclaimPolicy: Retain
