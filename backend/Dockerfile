@@ -27,7 +27,7 @@ WORKDIR /usr/src/app
 COPY --from=build /usr/src/app /usr/src/app
 
 
-RUN npm install --only=production
+RUN npm install 
 
 
 EXPOSE 8081
