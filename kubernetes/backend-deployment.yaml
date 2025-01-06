@@ -18,9 +18,9 @@ spec:
           ports:
             - containerPort: 8081
           volumeMounts:
-            - mountPath: /usr/src/app/data  
-              name: sqlite-data  
+            - mountPath: /usr/src/app/data
+              name: sqlite-data  # Mounting the persistent volume to the backend container
       volumes:
         - name: sqlite-data
           persistentVolumeClaim:
-            claimName: sqlite-pvc  
+            claimName: sqlite-pvc  # Referring to the PVC
